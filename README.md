@@ -1,2 +1,2 @@
 # TaskTracker
-A time-based task tracker built in WPF and written in C#
+A time-based task tracker built in WPF using C#

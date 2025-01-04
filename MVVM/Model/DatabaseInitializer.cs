@@ -9,7 +9,14 @@ using System.Threading.Tasks;
 namespace TaskTracker.MVVM.Model {
     public class DatabaseInitializer {
 
+        public static string ConnectionString { get; private set; } = String.Empty;
+        private bool _isInitalized = false;
+
         public void InitializeDatabase() {
+
+            // Only initialize the database once
+            if (_isInitalized) return;
+            _isInitalized = true;
 
             // Retrieve the users app data folder path
             string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -25,6 +32,9 @@ namespace TaskTracker.MVVM.Model {
 
             // Use the dbFilePath to create the connection string
             string connectionString = $@"Data Source={dbFilePath};";
+
+            // Assign the connection string to be read elsewhere in the program
+            ConnectionString = connectionString;
 
             using (var connection = new SqliteConnection(connectionString)) {
                 connection.Open();

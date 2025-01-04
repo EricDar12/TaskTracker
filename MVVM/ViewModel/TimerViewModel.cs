@@ -5,15 +5,18 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.Input;
+using TaskTracker.MVVM.Model;
 
 namespace TaskTracker.MVVM.ViewModel {
     internal class TimerViewModel : INotifyPropertyChanged {
 
         private readonly DispatcherTimer _timer;
         private TimeSpan _elapsedTime;
-        private bool isRunning = false;
+        private bool _isRunning = false;
 
         public string TimerDisplay => _elapsedTime.ToString(@"hh\:mm\:ss");
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand StartTimerCommand { get; }
         public ICommand StopTimerCommand { get; }
@@ -30,14 +33,14 @@ namespace TaskTracker.MVVM.ViewModel {
         }
 
         public void StartTimer() {
-            if (isRunning) return;
-            isRunning = true;
+            if (_isRunning) return;
+            _isRunning = true;
             _elapsedTime = TimeSpan.Zero;
             _timer.Start();
         }
 
         public void StopTimer() {
-            isRunning = false;
+            _isRunning = false;
             _timer.Stop();
         }
 
@@ -46,7 +49,6 @@ namespace TaskTracker.MVVM.ViewModel {
             OnPropertyChanged(nameof(TimerDisplay));
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null!) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

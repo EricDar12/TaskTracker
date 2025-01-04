@@ -9,10 +9,10 @@ namespace TaskTracker.MVVM.Model {
         public int TaskID { get; private set; }
         public string TaskName { get; set; } = string.Empty;
 
-        // For user created tasks
-        public Task(string taskName) {
-            TaskName = taskName;
+        public Task() {
+
         }
+
         // For constructing tasks from the database
         public Task(int taskId, string taskName) {
             TaskID = taskId;

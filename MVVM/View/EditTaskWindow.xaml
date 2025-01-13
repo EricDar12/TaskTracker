@@ -1,0 +1,18 @@
+﻿<Window x:Class="TaskTracker.MVVM.View.EditTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskTracker.MVVM.View"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="EditTaskWindow" Height="275" Width="350">
+    <Grid>
+        <StackPanel Grid.Column="1">
+            <Label HorizontalAlignment="Center" FontWeight="Bold" Margin="0,20,0,0" FontSize="16" Content="Enter Or Update Existing Task"/>
+            <TextBox HorizontalAlignment="Center" Width="250" FontSize="24" Margin="0,40,0,0" Text="{Binding EditingTaskName, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Save Changes" Width="100" Height="30" Command="{Binding SaveTaskCommand}" Margin="0,20,0,10"/>
+            <Button Content="Delete This Task" Width="100" Height="30" Command="{Binding DeleteTaskCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

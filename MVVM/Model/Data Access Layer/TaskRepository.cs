@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 namespace TaskTracker.MVVM.Model.Data_Access_Layer {
     internal class TaskRepository {
 
-        public ObservableCollection<Task> GetAllTasks() {
+        public ObservableCollection<TrackedTask> GetAllTasks() {
 
-            var tasks = new ObservableCollection<Task>();
+            var tasks = new ObservableCollection<TrackedTask>();
 
             using (var connection = new SqliteConnection(DatabaseInitializer.ConnectionString)) {
                 connection.Open();
-                var result = connection.Query<Task>("SELECT * FROM Task").ToList();
+                var result = connection.Query<TrackedTask>("SELECT * FROM Task").ToList();
                 foreach (var task in result) {
                     tasks.Add(task);
                 }
@@ -25,15 +25,40 @@ namespace TaskTracker.MVVM.Model.Data_Access_Layer {
             return tasks;
         }
 
-        public void InsertNewTask(string taskName) {
+        public int InsertNewTask(string taskName) {
 
             var command = "INSERT INTO Task (TaskName) VALUES (@TaskName)";
 
             using (var connection = new SqliteConnection(DatabaseInitializer.ConnectionString)) {
                 connection.Open();
                 int rowsAffected = connection.Execute(command, new {TaskName = taskName});
+                return rowsAffected;
             }
             
+        }
+
+        public int UpdateTask(string newTaskName, int taskID) {
+
+            var command = "UPDATE Task SET TaskName = @NewTaskName WHERE TaskID = @TaskID";
+
+            using (var connection = new SqliteConnection(DatabaseInitializer.ConnectionString)) {
+                connection.Open();
+                int rowsAffected = connection.Execute(command, new { NewTaskName = newTaskName, TaskID = taskID });
+                return rowsAffected;
+            }
+
+        }
+
+        public int DeleteTask(int taskID) {
+
+            var command = "DELETE FROM Task WHERE TaskID = @TaskID";
+
+            using (var connection = new SqliteConnection(DatabaseInitializer.ConnectionString)) {
+                connection.Open();
+                int rowsAffected = connection.Execute(command, new {TaskID = taskID});
+                return rowsAffected;
+            }
+
         }
 
     }

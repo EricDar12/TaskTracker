@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Timers;
 using CommunityToolkit.Mvvm.Input;
 using TaskTracker.MVVM.Model;
 
 namespace TaskTracker.MVVM.ViewModel {
     internal class TimerViewModel : INotifyPropertyChanged {
 
-        private readonly DispatcherTimer _timer;
+        private readonly System.Timers.Timer _timer;
         private TimeSpan _elapsedTime;
         private bool _isRunning = false;
 
@@ -22,11 +23,9 @@ namespace TaskTracker.MVVM.ViewModel {
         public ICommand StopTimerCommand { get; }
 
         public TimerViewModel() {
-            _timer = new DispatcherTimer {
-                Interval = TimeSpan.FromSeconds(1)
-            };
+            _timer = new System.Timers.Timer(1000);
 
-            _timer.Tick += UpdateTimer_Tick!;
+            _timer.Elapsed += UpdateTimer_Tick!;
 
             StartTimerCommand = new RelayCommand(StartTimer);
             StopTimerCommand = new RelayCommand(StopTimer);
@@ -40,13 +39,17 @@ namespace TaskTracker.MVVM.ViewModel {
         }
 
         public void StopTimer() {
+            if (!_isRunning) return;
             _isRunning = false;
             _timer.Stop();
         }
 
         private void UpdateTimer_Tick(object sender, EventArgs e) {
-            _elapsedTime = _elapsedTime.Add(_timer.Interval);
-            OnPropertyChanged(nameof(TimerDisplay));
+            _elapsedTime = _elapsedTime.Add(TimeSpan.FromSeconds(1));
+            // Marshal the update to the UI thread to ensure thread safety
+            App.Current.Dispatcher.Invoke(() => {
+                OnPropertyChanged(nameof(TimerDisplay));
+            });
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null!) {

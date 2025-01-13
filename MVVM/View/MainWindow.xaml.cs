@@ -14,7 +14,7 @@ namespace TaskTracker {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            cmbTasks.DataContext = new TaskViewModel();
+            stackPanelTask.DataContext = new TaskViewModel();
             stackPanelTimer.DataContext = new TimerViewModel();
         }
     }

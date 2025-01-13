@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 
 namespace TaskTracker.MVVM.Model {
-    internal class Task {
+    internal class TrackedTask {
 
         public int TaskID { get; private set; }
         public string TaskName { get; set; } = string.Empty;
 
-        public Task() {
+        public TrackedTask() {
 
         }
 
         // For constructing tasks from the database
-        public Task(int taskId, string taskName) {
+        public TrackedTask(int taskId, string taskName) {
             TaskID = taskId;
             TaskName = taskName;
         }

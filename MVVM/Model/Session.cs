@@ -9,10 +9,10 @@ namespace TaskTracker.MVVM.Model {
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public Task Task { get; set; }
+        public TrackedTask Task { get; set; }
         public TimeSpan Duration => EndTime - StartTime;
 
-        public Session(DateTime startTime, Task task) {
+        public Session(DateTime startTime, TrackedTask task) {
             StartTime = startTime;
             Task = task ?? throw new ArgumentNullException(nameof(task));
         }

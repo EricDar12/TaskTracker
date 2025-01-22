@@ -21,6 +21,7 @@ namespace TaskTracker.MVVM.ViewModel {
         public bool IsNewTask { get; private set; }
         public ICommand SaveTaskCommand { get; }
         public ICommand DeleteTaskCommand { get; }
+        public ICommand NewTaskCommand {  get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public static event EventHandler? TasksChanged;
@@ -54,12 +55,14 @@ namespace TaskTracker.MVVM.ViewModel {
             _taskRepository = new TaskRepository();
             SaveTaskCommand = new RelayCommand(SaveTask);
             DeleteTaskCommand = new RelayCommand(DeleteTask);
+            NewTaskCommand = new RelayCommand(NewTask);
+
         }
 
         private void SaveTask() {
 
             if (EditingTaskName == String.Empty) {
-                MessageBox.Show("Task Name Can Not Be Empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                MessageBox.Show("Error", "Task Name Can Not Be Empty", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 return;
             }
 
@@ -68,12 +71,12 @@ namespace TaskTracker.MVVM.ViewModel {
                 int rowsAffected = _taskRepository.InsertNewTask(EditingTaskName);
 
                 if (rowsAffected > 0) {
-                    MessageBox.Show("Task Entered", "Success", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                    MessageBox.Show("Success", "Task Entered Successfully", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     TasksChanged?.Invoke(this, EventArgs.Empty);
                     CloseWindow();
                 }
                 else {
-                    MessageBox.Show("Task Entry Failed", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    MessageBox.Show("Error", "Task Entry Failed", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
 
             }
@@ -94,9 +97,10 @@ namespace TaskTracker.MVVM.ViewModel {
             }
         }
 
+        // This will need to support deleting sessions, which are dependent on tasks
         private void DeleteTask() {
             if (SelectedTask.TaskName == String.Empty) {
-                MessageBox.Show("No Task To Delete", "Error", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                MessageBox.Show("Error", "No Task To Delete", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 return;
             }
             int rowsAffected = _taskRepository.DeleteTask(SelectedTask.TaskID);
@@ -109,6 +113,12 @@ namespace TaskTracker.MVVM.ViewModel {
             else {
                 MessageBox.Show("Error", "Task Deletion Failed", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             }
+        }
+
+        private void NewTask() {
+            SelectedTask = new TrackedTask();
+            EditingTaskName = String.Empty;
+            IsNewTask = true;
         }
 
         private void CloseWindow() {

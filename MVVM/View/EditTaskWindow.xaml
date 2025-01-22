@@ -10,9 +10,12 @@
     <Grid>
         <StackPanel Grid.Column="1">
             <Label HorizontalAlignment="Center" FontWeight="Bold" Margin="0,20,0,0" FontSize="16" Content="Enter Or Update Existing Task"/>
-            <TextBox HorizontalAlignment="Center" Width="250" FontSize="24" Margin="0,40,0,0" Text="{Binding EditingTaskName, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Save Changes" Width="100" Height="30" Command="{Binding SaveTaskCommand}" Margin="0,20,0,10"/>
-            <Button Content="Delete This Task" Width="100" Height="30" Command="{Binding DeleteTaskCommand}"/>
+            <TextBox HorizontalAlignment="Center" Width="250" FontSize="24" Margin="0,40,0,20" Text="{Binding EditingTaskName, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Button Content="New Task" Width="80" Height="30" Command="{Binding NewTaskCommand}" Margin="0,0,10,0"></Button>
+                <Button Content="Delete Task" Width="80" Height="30" Command="{Binding DeleteTaskCommand}"/>
+            </StackPanel>
+            <Button Content="Save Changes" Width="80" Height="30" Command="{Binding SaveTaskCommand}"/>
         </StackPanel>
     </Grid>
 </Window>
